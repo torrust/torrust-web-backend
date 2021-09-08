@@ -1,0 +1,560 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js coal">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Torrust v1</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Torrust Backend v1 Documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "coal";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="ABOUT.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="BUILD.html"><strong aria-hidden="true">2.</strong> Building</a></li><li class="chapter-item expanded "><a href="CONFIG.html"><strong aria-hidden="true">3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="USAGE.html"><strong aria-hidden="true">4.</strong> Usage</a></li><li class="chapter-item expanded "><a href="API.html"><strong aria-hidden="true">5.</strong> REST API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="USER_API.html"><strong aria-hidden="true">5.1.</strong> /user</a></li><li class="chapter-item expanded "><a href="TORRENT_API.html"><strong aria-hidden="true">5.2.</strong> /torrent</a></li><li class="chapter-item expanded "><a href="CATEGORY_API.html"><strong aria-hidden="true">5.3.</strong> /category</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">Torrust v1</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/torrust/torrust" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="torrust"><a class="header" href="#torrust">Torrust</a></h1>
+<p><a href="https://app.travis-ci.com/torrust/torrust"><img src="https://app.travis-ci.com/torrust/torrust.svg?branch=master" alt="Build Status" /></a></p>
+<p>Torrust is an open source web based BitTorrent tracker developed in Rust. 
+It allows users to upload and download torrents on a web UI, and tracks peers with an UDP BitTorrent tracker.</p>
+<h2 id="project-structure"><a class="header" href="#project-structure">Project structure</a></h2>
+<ul>
+<li><a href="https://github.com/torrust/torrust"><strong>Torrust</strong></a> (This repo): A REST API that acts as a backend for Torrust Web.</li>
+<li><a href="https://github.com/torrust/torrust-web"><strong>Torrust Web</strong></a>: A Vue application where torrents can be uploaded and downloaded.</li>
+<li><a href="https://github.com/torrust/torrust-tracker"><strong>Torrust Tracker</strong></a>: A UDP based torrent tracker built with Rust.</li>
+</ul>
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Login / Register</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Authentication using JWT tokens</li>
+<li><input disabled="" type="checkbox" checked=""/>
+E-mail verification</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Torrent Uploading / Downloading</li>
+</ul>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Please report any bugs you find to our issue tracker. Ideas and feature requests are welcome as well!
+Any pull request targeting existing issues would be very much appreciated.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="building-torrust-tracker"><a class="header" href="#building-torrust-tracker">Building Torrust Tracker</a></h1>
+<h2 id="required-tools"><a class="header" href="#required-tools">Required tools</a></h2>
+<ul>
+<li><a href="https://git-scm.com">Git</a> - Version Control</li>
+<li><a href="https://www.rust-lang.org/">Rust</a> - Compiler toolchain &amp; Package Manager (cargo)</li>
+</ul>
+<h3 id="getting-the-sources"><a class="header" href="#getting-the-sources">Getting the sources</a></h3>
+<pre><code class="language-bash">git clone https://github.com/torrust/torrust.git
+</code></pre>
+<p>If you prefer to just download the code, you can get the <a href="https://github.com/torrust/torrust/archive/master.zip">latest codebase here</a>.</p>
+<h3 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h3>
+<p>While compiling sqlx will check if queries are valid against a database, but it doesnt create it.
+To create it manually you will need to install the sqlx-cli by running:</p>
+<pre><code class="language-bash">cargo install sqlx-cli
+</code></pre>
+<p>To create it and run the migrations run:</p>
+<pre><code class="language-bash">sqlx db setup
+</code></pre>
+<h3 id="building"><a class="header" href="#building">Building</a></h3>
+<p>This step will download all required dependencies (from <a href="https://crates.io/">crates.io</a>) and build them as well. </p>
+<p>Building should always be done with the latest Rust compiler.</p>
+<pre><code class="language-bash">cd torrust
+cargo build --release
+</code></pre>
+<p>Once cargo is done building, <code>torrust</code> will be built at <code>target/release/torrust</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configuring-torrust"><a class="header" href="#configuring-torrust">Configuring Torrust</a></h1>
+<p>Torrust's configuration is a simple TOML file. If no TOML file is found, it will fail on startup.</p>
+<h2 id="must-change"><a class="header" href="#must-change">Must change</a></h2>
+<blockquote>
+<p>These are all of the configuration oprtions that can affect the security of your instance. Please make sure to change these to your own values.</p>
+</blockquote>
+<ul>
+<li><code>tracker.token</code></li>
+<li><code>auth.secret_key</code></li>
+</ul>
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<h3 id="required-tracker-section"><a class="header" href="#required-tracker-section"><code>REQUIRED</code> <code>[tracker]</code> Section</a></h3>
+<ul>
+<li><code>REQUIRED</code> <code>url</code>: public UDP url of the Torrust Tracker instance.</li>
+<li><code>REQUIRED</code> <code>api_url</code>: URL of the Torrust Tracker API, usually <code>http://localhost:1212</code>.</li>
+<li><code>REQUIRED</code> <code>token</code>: token configured in the Torrust Tracker configuration.</li>
+<li><code>REQUIRED</code> <code>token_valid_seconds</code>: Lifetime of a tracker key.</li>
+</ul>
+<h3 id="required-net-section"><a class="header" href="#required-net-section"><code>REQUIRED</code> <code>[net]</code> Section</a></h3>
+<ul>
+<li><code>REQUIRED</code> <code>port</code>: The port the API will listen on. It's not advised to use ports under 1024 because root access is required for these ports.</li>
+<li><code>base_url</code>: The URL this application is accesible from. Used to build the email verification URL. If not set it uses the hostname the endpoint was called from.</li>
+</ul>
+<h3 id="required-database-section"><a class="header" href="#required-database-section"><code>REQUIRED</code> <code>[database]</code> Section</a></h3>
+<ul>
+<li><code>REQUIRED</code> <code>connect_url</code>: The connection URL of the database. Should always start with <code>sqlite:</code>, no other databases are supported as of now.Including <code>mode=rwc</code> allows the database to be <code>Read / Writed / Created</code>. Example: <code>sqlite://data.db?mode=rwc</code></li>
+<li><code>REQUIRED</code> <code>torrent_info_update_interval</code>: Interval in seconds for updating torrent seeder and leecher information. This can be a heavy operation depending on the amount of torrents that are tracked, and thus is not recommended to be lower than <code>1800</code> seconds.</li>
+</ul>
+<h3 id="required-mail-section"><a class="header" href="#required-mail-section"><code>REQUIRED</code> <code>[mail]</code> Section</a></h3>
+<ul>
+<li><code>REQUIRED</code> <code>server</code>: Hostname or IP address of a SMTP server.</li>
+<li><code>REQUIRED</code> <code>port</code>: Port of the SMTP server.</li>
+<li><code>REQUIRED</code> <code>username</code>: Username for authenticating with the specified SMTP server.</li>
+<li><code>REQUIRED</code> <code>password</code>: Password for authenticating with the specified SMTP server.</li>
+<li><code>REQUIRED</code> <code>from</code>: Email address where emails are sent from.</li>
+<li><code>REQUIRED</code> <code>reply_to</code>: Email address to which replies on the emails should be sent. Can also be a non reply address, or the same as the from address.</li>
+</ul>
+<h3 id="required-auth-section"><a class="header" href="#required-auth-section"><code>REQUIRED</code> <code>[auth]</code> Section</a></h3>
+<ul>
+<li><code>REQUIRED</code> <code>min_password_length</code>: Minimum length of a password when registering a new user.</li>
+<li><code>REQUIRED</code> <code>max_password_length</code>: Maximum length of a password when registering a new user.</li>
+<li><code>REQUIRED</code> <code>secret_key</code>: Signing key of the JWT authentication tokens. Keeping these default will severly impact the security of your instance, and allows attackers to login as any user.</li>
+</ul>
+<h3 id="required-storage-section"><a class="header" href="#required-storage-section"><code>REQUIRED</code> <code>[storage]</code> Section</a></h3>
+<ul>
+<li><code>REQUIRED</code> <code>upload_path</code>: Path where uploads should be stored. Directories will be automatically created on startup if they don't exist.</li>
+</ul>
+<h2 id="default-configuration"><a class="header" href="#default-configuration">Default Configuration</a></h2>
+<pre><code class="language-toml">[tracker]
+# tracker UDP url with PORT.
+url = &quot;udp://localhost:6969&quot;
+# tracker REST API url with PORT.
+api_url = &quot;http://localhost:1212&quot;
+# token needs to be set to use the tracker REST API.
+token = &quot;MyAccessToken&quot;
+# 12 weeks
+token_valid_seconds = 7257600
+
+[net]
+port = 3000
+
+[database]
+# mode rwc means read/write/create.
+# without create, you'll have to manually create the database.
+connect_url = &quot;sqlite://data.db?mode=rwc&quot;
+# recommended to keep it at least at 1800 seconds.
+# interval should increase with amount of torrents.
+torrent_info_update_interval = 3600
+
+[mail]
+# SMTP server and port
+server = &quot;&quot;
+port = 25
+# username and password for authenticating with the SMTP server
+username = &quot;&quot;
+password = &quot;&quot;
+# email address where mail is sent from
+from = &quot;&quot;
+# email address to which a reply can be sent
+reply_to = &quot;&quot;
+
+[auth]
+min_password_length = 6
+max_password_length = 64
+# IMPORTANT: change to some random chars.
+# DO NOT KEEP THIS DEFAULT SECRET.
+secret_key = &quot;MaxVerstappenWC2021&quot;
+
+[storage]
+# storage path for uploaded torrent files.
+upload_path = &quot;./uploads&quot;
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting started</a></h1>
+<p>The easiest way is to get built binaries from <a href="https://github.com/torrust/torrust/releases">Releases</a>,
+but building from sources is also possible:</p>
+<pre><code class="language-bash">git clone https://github.com/torrust/torrust.git
+cd torrust
+cargo build --release
+</code></pre>
+<p><strong>Notice:</strong> Skip the first step if you've downloaded the binaries directly. </p>
+<ol>
+<li>After building <strong>Torrust</strong>, navigate to the folder.</li>
+</ol>
+<pre><code class="language-bash">cd torrust/target
+</code></pre>
+<ol start="2">
+<li>
+<p>Create a file called <code>config.toml</code> with the following contents and change the <a href="https://torrust.github.io/torrust-tracker/CONFIG.html">configuration</a> according to your liking.</p>
+</li>
+<li>
+<p>And run <strong>Torrust</strong>:</p>
+</li>
+</ol>
+<pre><code class="language-bash">./torrust
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="torrust-rest-api"><a class="header" href="#torrust-rest-api">Torrust REST API</a></h1>
+<h2 id="entities-v1"><a class="header" href="#entities-v1">Entities (v1)</a></h2>
+<p>The API has been split up in three main entities, each containing one or multiple underlying routes.</p>
+<ul>
+<li><a href="USER_API.html"><code>/user</code></a> - all authentication and user routes.</li>
+<li><a href="USER_API.html"><code>/torrent</code></a> - all individual torrent routes, no collections.</li>
+<li><a href="USER_API.html"><code>/category</code></a> - routes for getting categories and all torrents in a specific category.</li>
+</ul>
+<h2 id="authorization"><a class="header" href="#authorization">Authorization</a></h2>
+<p>Some routes can only be accessed by logged in users.
+For these routes you have to send the token obtained in <a href="USER_API.html#login">/user/login</a> in the <code>Authorization</code> header as a bearer token.
+<br><br>
+For example:</p>
+<pre><code class="language-http">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlX3VzZXIiLCJleHAiOjE2MzIyNTQxNjZ9.kyugZXiR88q4n6Ze44HonazDp-sJdq886te9-XHthHg
+</code></pre>
+<p><a id="errors"></a></p>
+<h2 id="errors"><a class="header" href="#errors">Errors</a></h2>
+<p>Every route always returns a non <code>2xx</code> status code for an error.
+If the error is caused by user input the status code will be in the <code>4xx</code> range.
+Unrecoverable server errors return a <code>500</code> status code.</p>
+<p>Every error contains a error message that is safe to display to an user.
+The body of an error <em>should</em> always look like this:</p>
+<pre><code class="language-json">{
+  &quot;error&quot;: &quot;&lt;error message&gt;&quot;
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="torrust-rest-api-1"><a class="header" href="#torrust-rest-api-1">Torrust REST API</a></h1>
+<h2 id="user-endpoints-v1"><a class="header" href="#user-endpoints-v1">User endpoints (v1)</a></h2>
+<h3 id="post-userregister"><a class="header" href="#post-userregister"><code>POST /user/register</code></a></h3>
+<p>Register (sign-up) a new user account.</p>
+<p><code>Example: POST /user/register</code></p>
+<h4 id="body"><a class="header" href="#body">Body:</a></h4>
+<pre><code class="language-json">{
+	&quot;email&quot;: &quot;email@example.com&quot;,
+	&quot;username&quot;: &quot;example_user&quot;,
+	&quot;password&quot;: &quot;password&quot;,
+	&quot;confirm_password&quot;: &quot;password&quot;
+}
+</code></pre>
+<h4 id="response"><a class="header" href="#response">Response:</a></h4>
+<ul>
+<li>On success: Status <code>200</code>, with an empty body.</li>
+<li>On error: Standard error, see <a href="API.html#errors">Errors</a></li>
+</ul>
+<hr />
+<p><a id="login"></a></p>
+<h3 id="post-userlogin"><a class="header" href="#post-userlogin"><code>POST /user/login</code></a></h3>
+<p>Login into an existing account.</p>
+<h4 id="fields"><a class="header" href="#fields">Fields</a></h4>
+<ul>
+<li><code>login</code>: Either the email or username of the account</li>
+<li><code>password</code>: password of the account
+<br><br></li>
+</ul>
+<p><code>Example: POST /user/login</code></p>
+<h4 id="body-1"><a class="header" href="#body-1">Body:</a></h4>
+<pre><code class="language-json">{
+	&quot;login&quot;: &quot;email@example.com&quot;,
+	&quot;password&quot;: &quot;password&quot;
+}
+</code></pre>
+<h4 id="response-1"><a class="header" href="#response-1">Response:</a></h4>
+<ul>
+<li>On success: Status <code>200</code>.</li>
+</ul>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;token&quot;: &quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlX3VzZXIiLCJleHAiOjE2MzIyNTQxNjZ9.kyugZXiR88q4n6Ze44HonazDp-sJdq886te9-XHthHg&quot;,
+    &quot;username&quot;: &quot;example_user&quot;
+  }
+}
+</code></pre>
+<ul>
+<li>On error: Standard error, see <a href="API.html#errors">Errors</a></li>
+</ul>
+<hr />
+<h3 id="get-userverifytoken"><a class="header" href="#get-userverifytoken"><code>GET /user/verify/&lt;token&gt;</code></a></h3>
+<p>Email verification handler. <br>
+On register an email is sent to the email address of the registered account with a link to this route to verify their email address.</p>
+<p><img src="images/email-verification.png" alt="email verification mail" /></p>
+<p><code>Example: GET /user/verify/&lt;token&gt;</code></p>
+<h4 id="response-2"><a class="header" href="#response-2">Response:</a></h4>
+<ul>
+<li>On success: Status <code>200</code>.</li>
+</ul>
+<pre><code class="language-html">Email verified, you can close this page.
+</code></pre>
+<ul>
+<li>On error: Error message as a string.</li>
+</ul>
+<pre><code class="language-html">Token invalid.
+</code></pre>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><h1 id="torrust-rest-api-2"><a class="header" href="#torrust-rest-api-2">Torrust REST API</a></h1>
+<h2 id="torrent-endpoints-v1"><a class="header" href="#torrent-endpoints-v1">Torrent endpoints (v1)</a></h2>
+<h3 id="post-torrentupload"><a class="header" href="#post-torrentupload"><code>POST /torrent/upload</code></a></h3>
+<p>Upload a torrent file and create a torrent listing for it in the index.</p>
+<p>Consumes a <strong>mutipart</strong> form with the fields:</p>
+<ul>
+<li><code>title</code>: Title of the torrent listing.</li>
+<li><code>description</code>: A Markdown description.</li>
+<li><code>category</code>: Category this torrent fits in.</li>
+<li><code>torrent</code>: The torrent file itself.</li>
+</ul>
+<h4 id="response-3"><a class="header" href="#response-3">Response:</a></h4>
+<ul>
+<li>On success: Status <code>200</code>, returns id of the newly created torrent listing.</li>
+</ul>
+<pre><code class="language-json">{
+    &quot;data&quot;: {
+        &quot;torrent_id&quot;: 1
+    }
+}
+</code></pre>
+<ul>
+<li>On error: Standard error, see <a href="API.html#errors">Errors</a></li>
+</ul>
+<hr />
+<h3 id="get-torrentdownloadid"><a class="header" href="#get-torrentdownloadid"><code>GET /torrent/download/&lt;id&gt;</code></a></h3>
+<p>Generate and download torrent file with a personal annouce URL for the authenticated user.</p>
+<h4 id="response-4"><a class="header" href="#response-4">Response:</a></h4>
+<ul>
+<li>On success: Status <code>200</code>, Personalised .torrent file stream.</li>
+<li>On error: Standard error, see <a href="API.html#errors">Errors</a></li>
+</ul>
+<hr />
+<h3 id="get-torrentid"><a class="header" href="#get-torrentid"><code>GET /torrent/&lt;id&gt;</code></a></h3>
+<p>Get all torrent information of the listing with <code>id</code>, used for loading the data of the TorrentDetails page.</p>
+<h4 id="response-5"><a class="header" href="#response-5">Response:</a></h4>
+<ul>
+<li>On success: Status <code>200</code>.</li>
+</ul>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;torrent_id&quot;: 1,
+    &quot;uploader&quot;: &quot;example_user&quot;,
+    &quot;info_hash&quot;: &quot;5499b9f42b44fb61c937be5943a194adb7aa6278&quot;,
+    &quot;title&quot;: &quot;Example torrent&quot;,
+    &quot;description&quot;: &quot;## Some torrent title\n\nSome torrent text.\n\n---&quot;,
+    &quot;category_id&quot;: 1,
+    &quot;upload_date&quot;: 1631046870,
+    &quot;file_size&quot;: 15653809,
+    &quot;seeders&quot;: 0,
+    &quot;leechers&quot;: 0,
+    &quot;files&quot;: null
+  }
+}
+</code></pre>
+<ul>
+<li>On error: Standard error, see <a href="API.html#errors">Errors</a></li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><h1 id="torrust-rest-api-3"><a class="header" href="#torrust-rest-api-3">Torrust REST API</a></h1>
+<h2 id="category-endpoints-v1"><a class="header" href="#category-endpoints-v1">Category endpoints (v1)</a></h2>
+<h3 id="get-"><a class="header" href="#get-"><code>GET /</code></a></h3>
+<p>Get a list of existing categories.</p>
+<h4 id="response-6"><a class="header" href="#response-6">Response:</a></h4>
+<ul>
+<li>On success: Status <code>200</code>.</li>
+</ul>
+<pre><code class="language-json">{
+  &quot;data&quot;: [
+    {
+      &quot;name&quot;: &quot;app&quot;,
+      &quot;num_torrents&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;documentary&quot;,
+      &quot;num_torrents&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;game&quot;,
+      &quot;num_torrents&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;movie&quot;,
+      &quot;num_torrents&quot;: 1
+    },
+    {
+      &quot;name&quot;: &quot;music&quot;,
+      &quot;num_torrents&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;other&quot;,
+      &quot;num_torrents&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;tv show&quot;,
+      &quot;num_torrents&quot;: 0
+    }
+  ]
+}
+</code></pre>
+<ul>
+<li>On error: Standard error, see <a href="API.html#errors">Errors</a></li>
+</ul>
+<hr />
+<h3 id="get-categorycategorytorrents"><a class="header" href="#get-categorycategorytorrents"><code>GET /category/&lt;category&gt;/torrents</code></a></h3>
+<p>Get an array of torrents that fall under the specified category.</p>
+<h4 id="response-7"><a class="header" href="#response-7">Response:</a></h4>
+<ul>
+<li>On success: Status <code>200</code>.</li>
+</ul>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;total&quot;: 2,
+    &quot;results&quot;: [
+      {
+        &quot;torrent_id&quot;: 2,
+        &quot;uploader&quot;: &quot;example_user&quot;,
+        &quot;info_hash&quot;: &quot;73844d3f5d163a6a778920e84aa084cc0746cd72&quot;,
+        &quot;title&quot;: &quot;Movie torrent&quot;,
+        &quot;description&quot;: &quot;## Awesome Movie 4\n\nAwesome Movie 4 is set in Alabama and is the succesor of Awesome Movie 3.\nGet ready for an even bigger adventure.&quot;,
+        &quot;category_id&quot;: 1,
+        &quot;upload_date&quot;: 1631047197,
+        &quot;file_size&quot;: 1243947,
+        &quot;seeders&quot;: 0,
+        &quot;leechers&quot;: 0
+      },
+      {
+        &quot;torrent_id&quot;: 1,
+        &quot;uploader&quot;: &quot;example_user&quot;,
+        &quot;info_hash&quot;: &quot;5499b9f42b44fb61c937be5943a194adb7aa6278&quot;,
+        &quot;title&quot;: &quot;Example torrent&quot;,
+        &quot;description&quot;: &quot;## Some torrent title\n\nSome torrent text.\n\n---&quot;,
+        &quot;category_id&quot;: 1,
+        &quot;upload_date&quot;: 1631046870,
+        &quot;file_size&quot;: 15653809,
+        &quot;seeders&quot;: 0,
+        &quot;leechers&quot;: 0
+      }
+    ]
+  }
+}
+</code></pre>
+<ul>
+<li>On error: Standard error, see <a href="API.html#errors">Errors</a></li>
+</ul>
+<hr />
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+    </body>
+</html>
