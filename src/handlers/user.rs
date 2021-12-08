@@ -137,12 +137,14 @@ pub async fn login(payload: web::Json<Login>, app_data: WebAppData) -> ServiceRe
             }
 
             let username = user.username.clone();
-            let token = app_data.auth.sign_jwt(user);
+            let token = app_data.auth.sign_jwt(user.clone());
+
 
             Ok(HttpResponse::Ok().json(OkResponse {
                 data: TokenResponse {
                     token,
-                    username
+                    username,
+                    admin: user.administrator
                 }
             }))
         }
@@ -189,12 +191,13 @@ pub async fn me(req: HttpRequest, app_data: WebAppData) -> ServiceResult<impl Re
     }?;
 
     let username = user.username.clone();
-    let token = app_data.auth.sign_jwt(user);
+    let token = app_data.auth.sign_jwt(user.clone());
 
     Ok(HttpResponse::Ok().json(OkResponse {
         data: TokenResponse {
             token,
-            username
+            username,
+            admin: user.administrator
         }
     }))
 }

@@ -32,6 +32,7 @@ impl AuthorizationService {
 
         let claims = Claims {
             sub: user.username,
+            admin: user.administrator,
             exp: exp_date,
         };
 
