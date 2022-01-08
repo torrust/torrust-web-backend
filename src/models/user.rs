@@ -1,5 +1,4 @@
 use serde::{Serialize, Deserialize};
-use sqlx::query_as;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct User {
